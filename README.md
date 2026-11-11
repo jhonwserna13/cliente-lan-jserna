@@ -27,7 +27,7 @@ y el análisis de vulnerabilidades en entornos controlados.
 - GitHub
 - Render
 
-## Objetivo académico
+## Objetivo
 
 Comprender diferentes escenarios de seguridad
 informática mediante simulaciones controladas,
