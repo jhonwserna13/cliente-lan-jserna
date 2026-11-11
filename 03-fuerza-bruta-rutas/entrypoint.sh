@@ -21,7 +21,7 @@ sleep 3
 echo "Iniciando pruebas de rutas locales..."
 
 for ruta in index.html admin.html login.html backup.zip config.php; do
-    CODE=$(wget -q -O /dev/null -S "http://127.0.0.1:$PORT/$ruta" 2>&1 | awk '/HTTP\// {code=$2} END {print code}')
+    CODE=$(wget -q -O /dev/null -S "http://127.0.0.1:$PORT/$ruta" 2>&1 | awk '$1 ~ /^HTTP\// {code=$2} END {print code}')
     echo "Ruta: /$ruta -> HTTP $CODE"
 done
 
