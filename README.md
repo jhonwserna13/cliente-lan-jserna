@@ -1,1 +1,1 @@
-# cliente-lan
+# laboratorio-ciberseguridad-jserna
