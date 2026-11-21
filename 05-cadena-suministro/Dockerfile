@@ -10,8 +10,8 @@ RUN printf '#!/bin/sh\necho "[DEMO] Componente de prueba ejecutado."\n' > /app/d
 
 COPY entrypoint.sh /app/entrypoint.sh
 
-RUN chmod +x /app/entrypoint.sh
+RUN sed -i 's/\r$//' /app/entrypoint.sh && chmod +x /app/entrypoint.sh
 
 EXPOSE 10000
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
