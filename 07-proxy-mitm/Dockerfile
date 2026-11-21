@@ -9,4 +9,7 @@ COPY app.py /app/app.py
 
 EXPOSE 10000
 
+ENV PORT=10000
+
 CMD ["python", "app.py"]
+
