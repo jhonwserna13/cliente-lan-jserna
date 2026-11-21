@@ -9,12 +9,31 @@ echo "Estudiante: John Serna Hernandez"
 echo "=========================================="
 
 DATO_FICTICIO="dato_demo_laboratorio"
+
 DATO_CODIFICADO=$(printf '%s' "$DATO_FICTICIO" | base64 | tr -d '\n')
+
+DOMINIO_SIMULADO="${DATO_CODIFICADO}.laboratorio.invalid"
 
 echo "[INFO] Dato ficticio: $DATO_FICTICIO"
 echo "[INFO] Dato codificado: $DATO_CODIFICADO"
-echo "[ALERTA] Se detecto un payload codificado."
-echo "[SIMULACION] Consulta DNS registrada localmente."
+
+echo "[ALERTA] Payload codificado detectado."
+echo "[DNS] Construyendo consulta DNS simulada..."
+echo "[DNS] Dominio: $DOMINIO_SIMULADO"
+
+echo "[REGISTRO] Guardando evento de simulacion..."
+
+{
+    echo "SIMULACION DNS"
+    echo "Dato: $DATO_FICTICIO"
+    echo "Payload: $DATO_CODIFICADO"
+    echo "Dominio: $DOMINIO_SIMULADO"
+    echo "Estado: CONSULTA SIMULADA"
+    echo "Transmision externa: NO"
+    echo "-----------------------------"
+} >> /tmp/dns_simulation.log
+
+echo "[OK] Evento registrado localmente."
 echo "[ANALISIS] No se envio informacion a dominios externos."
 
 python3 -m http.server "$PORT" --bind 0.0.0.0 &
