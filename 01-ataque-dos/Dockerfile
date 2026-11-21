@@ -1,16 +1,16 @@
 
-
-FROM alpine:latest
-
-RUN apk add --no-cache python3 wget
+FROM python:3.12-alpine
 
 WORKDIR /app
 
-COPY entrypoint.sh /app/entrypoint.sh
+RUN pip install --no-cache-dir flask
 
-RUN sed -i 's/\r$//' /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+COPY app.py /app/app.py
 
 EXPOSE 10000
 
-ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
+ENV PORT=10000
+
+CMD ["python", "app.py"]
+
 
