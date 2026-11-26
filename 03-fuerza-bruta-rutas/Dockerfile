@@ -1,7 +1,7 @@
 
 FROM alpine:latest
 
-RUN apk add --no-cache python3 wget
+RUN apk add --no-cache curl python3
 
 WORKDIR /app
 
@@ -12,3 +12,4 @@ RUN sed -i 's/\r$//' /app/entrypoint.sh && chmod +x /app/entrypoint.sh
 EXPOSE 10000
 
 ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
+
