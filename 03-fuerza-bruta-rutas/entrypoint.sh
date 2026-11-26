@@ -1,32 +1,45 @@
-
 #!/bin/sh
 
 PORT="${PORT:-10000}"
 
-echo "======================================"
-echo "LABORATORIO: ENUMERACION DE RUTAS"
+TARGET="${TARGET_URL:-https://modulo-00-servidor-dmz-jserna.onrender.com}"
+
+RUTAS="/admin /config.php /login /secret /backup.zip /index.html"
+
+echo "=========================================="
+echo "LABORATORIO DE CIBERSEGURIDAD"
+echo "MODULO 03 - ENUMERACION DE RUTAS"
 echo "Estudiante: John Serna Hernandez"
-echo "======================================"
+echo "=========================================="
 
-mkdir -p /app/web
-echo "Pagina principal del laboratorio" > /app/web/index.html
-echo "Panel administrativo de demostracion" > /app/web/admin.html
-echo "Pagina de inicio de sesion de prueba" > /app/web/login.html
+echo "[INFO] Iniciando enumeracion de rutas..."
+echo "[OBJETIVO DMZ] $TARGET"
+echo "=========================================="
 
-python3 -m http.server "$PORT" --directory /app/web --bind 0.0.0.0 &
-SERVER_PID=$!
+for ruta in $RUTAS; do
 
-sleep 3
+    echo "------------------------------------------"
+    echo "[INFO] Analizando ruta: $ruta"
 
-echo "Iniciando pruebas de rutas locales..."
+    CODE=$(curl -sS -o /dev/null \
+        --connect-timeout 5 \
+        --max-time 10 \
+        -w "%{http_code}" \
+        "$TARGET$ruta" 2>/dev/null || true)
 
-for ruta in index.html admin.html login.html backup.zip config.php; do
-    CODE=$(wget -q -O /dev/null -S "http://127.0.0.1:$PORT/$ruta" 2>&1 | awk '$1 ~ /^HTTP\// {code=$2} END {print code}')
-    echo "Ruta: /$ruta -> HTTP $CODE"
+    if [ -z "$CODE" ]; then
+        CODE="000"
+    fi
+
+    echo "[RESULTADO] Ruta: $ruta -> HTTP $CODE"
+
 done
 
-echo "======================================"
-echo "ENUMERACION FINALIZADA"
-echo "======================================"
+echo "=========================================="
+echo "ENUMERACION DE RUTAS FINALIZADA"
+echo "=========================================="
 
-wait "$SERVER_PID"
+echo "[INFO] Iniciando servidor web de demostracion..."
+
+exec python3 -m http.server "$PORT" --bind 0.0.0.0
+
