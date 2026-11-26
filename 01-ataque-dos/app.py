@@ -1,4 +1,3 @@
-
 from flask import Flask, jsonify, render_template_string
 from datetime import datetime
 from collections import deque
